@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>People Domain — Understanding PMI Mindset | Maryam Tariq</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F172A;--navy2:#1E293B;--navy3:#334155;
+  --purp:#7C3AED;--purp2:#6D28D9;--teal:#0D9488;
+  --gold:#F9C02E;--goldd:#B45309;
+  --green:#15803D;--red:#DC2626;
+  --white:#fff;--grey:#94A3B8;--lite:#F8FAFF;
+}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#FFFFFF;color:#1a0030;min-height:100vh;overflow-x:hidden}
+
+/* HEADER */
+.header{background:linear-gradient(135deg,#1a0533,#0F172A);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--purp)}
+.header-left{display:flex;align-items:center;gap:12px}
+.logo-circle{width:42px;height:42px;border-radius:50%;background:var(--purp);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.header-title{font-size:15px;font-weight:800;color:var(--white);line-height:1.2}
+.header-sub{font-size:10px;color:#C4B5FD;margin-top:2px}
+.header-badge{background:var(--gold);color:#1a0030;font-size:10px;font-weight:800;padding:4px 12px;border-radius:20px;white-space:nowrap}
+
+/* PROGRESS BAR */
+.progress-wrap{background:#F3EEFF;padding:12px 20px 0}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-label{font-size:11px;color:#6D28D9;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.progress-score{display:flex;gap:16px}
+.score-item{text-align:center}
+.score-num{font-size:20px;font-weight:900;line-height:1}
+.score-lbl{font-size:9px;color:#6D28D9;text-transform:uppercase;letter-spacing:1px}
+.progress-bar-bg{background:#E9D5FF;border-radius:10px;height:8px;margin-bottom:0}
+.progress-bar-fill{height:8px;border-radius:10px;background:linear-gradient(90deg,var(--purp),var(--teal));transition:width .5s ease}
+.q-counter{font-size:11px;color:#6D28D9;text-align:center;padding:6px 0 10px;font-weight:600}
+
+/* MAIN CARD */
+.main{padding:16px 20px;max-width:900px;margin:0 auto;background:#FFFFFF}
+
+/* CATEGORY BADGE */
+.category-badge{display:inline-flex;align-items:center;gap:6px;background:#1a0533;border:1px solid var(--purp);border-radius:20px;padding:4px 14px;font-size:10.5px;font-weight:700;color:#C4B5FD;margin-bottom:14px;text-transform:uppercase;letter-spacing:.5px}
+
+/* SCENARIO */
+.scenario-box{background:#F5F0FF;border-radius:14px;padding:18px 20px;margin-bottom:18px;border:1px solid #C4B5FD;position:relative}
+.scenario-label{font-size:9.5px;font-weight:800;color:var(--purp2);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+.scenario-text{font-size:14.5px;line-height:1.65;color:#1E1B4B;font-weight:400}
+.scenario-text strong{color:var(--gold);font-weight:700}
+
+/* THREE RULE */
+.three-rule{display:flex;gap:8px;margin-bottom:18px}
+.rule-chip{flex:1;background:#EDE9FE;border-radius:8px;padding:7px 10px;text-align:center;border:1px solid #C4B5FD}
+.rule-num{font-size:16px;font-weight:900;color:var(--purp2);line-height:1}
+.rule-txt{font-size:9px;color:#6D28D9;text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* CHOICES */
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.choice-btn{background:#FFFFFF;border:2px solid #DDD6FE;border-radius:12px;padding:16px 18px;cursor:pointer;text-align:left;transition:all .2s;position:relative;overflow:hidden;box-shadow:0 2px 8px rgba(124,58,237,.08)}
+.choice-btn:hover:not(.disabled){border-color:var(--purp);background:#F5F0FF;transform:translateY(-1px)}
+.choice-label{font-size:9px;font-weight:800;color:#7C3AED;letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;display:block}
+.choice-text{font-size:12.5px;line-height:1.5;color:#1E1B4B;font-weight:500}
+.choice-letter{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:#EDE9FE;color:#7C3AED;font-size:12px;font-weight:900;margin-bottom:8px;flex-shrink:0}
+.choice-icon{position:absolute;top:14px;right:14px;font-size:20px;opacity:0;transition:opacity .3s}
+.revealed-tag{display:inline-block;font-size:8.5px;font-weight:800;padding:2px 8px;border-radius:10px;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.revealed-pick{background:#14532D;color:#86EFAC}
+.revealed-skip{background:#7F1D1D;color:#FCA5A5}
+.choice-btn.pick{border-color:var(--green);background:rgba(21,128,61,.08)}
+.choice-btn.pick .choice-icon{opacity:1}
+.choice-btn.skip{border-color:var(--red);background:rgba(220,38,38,.06)}
+.choice-btn.skip .choice-icon{opacity:1}
+.choice-btn.disabled{cursor:not-allowed;pointer-events:none}
+
+
+/* EXPLANATION */
+.explanation{display:none;background:#FAFAFA;border:1px solid #DDD6FE;border-radius:14px;padding:18px 20px;animation:fadeIn .4s ease}
+.explanation.show{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.exp-result{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.result-badge{font-size:13px;font-weight:900;padding:6px 16px;border-radius:8px;display:flex;align-items:center;gap:6px}
+.result-badge.correct{background:#14532D;color:#86EFAC}
+.result-badge.wrong{background:#7F1D1D;color:#FCA5A5}
+.result-title{font-size:16px;font-weight:800;color:#1E1B4B}
+.exp-section{margin-bottom:12px}
+.exp-label{font-size:9px;font-weight:800;color:var(--purp2);letter-spacing:2px;text-transform:uppercase;margin-bottom:5px}
+.exp-text{font-size:12px;line-height:1.6;color:#374151}
+.pmi-principle{background:#EDE9FE;border-left:3px solid var(--purp);border-radius:0 8px 8px 0;padding:10px 14px;font-size:11.5px;color:#4C1D95;font-weight:600;line-height:1.5;margin-top:10px}
+.keyword-highlight{color:var(--purp2);font-weight:700;background:#EDE9FE;padding:0 3px;border-radius:3px}
+
+/* NEXT BTN */
+.next-btn{width:100%;background:linear-gradient(135deg,var(--purp),var(--teal));border:none;border-radius:10px;padding:14px;font-size:14px;font-weight:800;color:var(--white);cursor:pointer;margin-top:14px;letter-spacing:.5px;transition:opacity .2s;display:none;box-shadow:0 4px 16px rgba(124,58,237,.25)}
+.next-btn.show{display:block}
+.next-btn:hover{opacity:.9}
+
+/* RESULTS SCREEN */
+.results-screen{display:none;text-align:center;padding:30px 20px;animation:fadeIn .5s ease}
+.results-screen.show{display:block}
+.results-emoji{font-size:64px;margin-bottom:16px}
+.results-title{font-size:28px;font-weight:900;margin-bottom:8px;color:#1E1B4B}
+.results-sub{font-size:14px;color:#4B5563;margin-bottom:24px;line-height:1.6}
+.results-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px;max-width:500px;margin-left:auto;margin-right:auto}
+.result-stat{background:#F5F0FF;border-radius:12px;padding:14px 10px;border:1px solid #DDD6FE}
+.result-stat .num{font-size:32px;font-weight:900;line-height:1}
+.result-stat .lbl{font-size:10px;color:var(--grey);text-transform:uppercase;letter-spacing:1px;margin-top:4px}
+.restart-btn{background:linear-gradient(135deg,var(--purp),var(--teal));border:none;border-radius:10px;padding:14px 32px;font-size:14px;font-weight:800;color:var(--white);cursor:pointer;letter-spacing:.5px}
+.restart-btn:hover{opacity:.9}
+
+/* BANNER */
+.banner{background:#1E1B4B;padding:10px 20px;text-align:center;font-size:10px;color:#C4B5FD;border-top:1px solid #DDD6FE;margin-top:20px}
+.banner span{color:var(--gold);font-weight:700}
+
+/* MOBILE */
+@media(max-width:600px){
+  .choices{grid-template-columns:1fr}
+  .three-rule{flex-direction:column}
+  .header-title{font-size:13px}
+  .scenario-text{font-size:13px}
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <div class="logo-circle">🧠</div>
+    <div>
+      <div class="header-title">People Domain — Understanding PMI Mindset</div>
+      <div class="header-sub">In this scenario — what would YOU pick?</div>
+    </div>
+  </div>
+  <div class="header-badge">42% of PMP Exam</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-top">
+    <div class="progress-label">Progress</div>
+    <div class="progress-score">
+      <div class="score-item"><div class="score-num" id="score-correct" style="color:#4ADE80">0</div><div class="score-lbl">Correct</div></div>
+      <div class="score-item"><div class="score-num" id="score-wrong" style="color:#F87171">0</div><div class="score-lbl">Wrong</div></div>
+    </div>
+  </div>
+  <div class="progress-bar-bg"><div class="progress-bar-fill" id="progress-fill" style="width:0%"></div></div>
+  <div class="q-counter" id="q-counter">Question 1 of 20</div>
+</div>
+
+<div class="main" id="quiz-area">
+  <div class="category-badge" id="category-badge">🎯 Category</div>
+
+  <div class="scenario-box">
+    <div class="scenario-label">📋 In This Scenario — What Would You Do?</div>
+    <div class="scenario-text" id="scenario-text">Loading...</div>
+  </div>
+
+  <div class="three-rule">
+    <div class="rule-chip"><div class="rule-num">1</div><div class="rule-txt">Highlight Keywords</div></div>
+    <div class="rule-chip"><div class="rule-num">2</div><div class="rule-txt">Eliminate Wrong</div></div>
+    <div class="rule-chip"><div class="rule-num">3</div><div class="rule-txt">Confirm Answer</div></div>
+  </div>
+
+  <div class="choices" id="choices-area">
+    <button class="choice-btn" id="btn-a" onclick="choose('a')" title="Option A">
+      <span class="choice-letter" id="letter-a">A</span>
+      <span class="choice-icon" id="icon-a">✅</span>
+      <div class="choice-text" id="choice-a-text"></div>
+    </button>
+    <button class="choice-btn" id="btn-b" onclick="choose('b')" title="Option B">
+      <span class="choice-letter" id="letter-b">B</span>
+      <span class="choice-icon" id="icon-b">❌</span>
+      <div class="choice-text" id="choice-b-text"></div>
+    </button>
+  </div>
+
+  <div class="explanation" id="explanation-box">
+    <div class="exp-result">
+      <div class="result-badge" id="result-badge">✅ Correct</div>
+      <div class="result-title" id="result-title">You picked PMI!</div>
+    </div>
+    <div class="exp-section">
+      <div class="exp-label">✅ Why This is the PMI Pick</div>
+      <div class="exp-text" id="exp-pick-text"></div>
+    </div>
+    <div class="exp-section">
+      <div class="exp-label">❌ Why That is the Skip</div>
+      <div class="exp-text" id="exp-skip-text"></div>
+    </div>
+    <div class="pmi-principle" id="pmi-principle"></div>
+  </div>
+
+  <button class="next-btn" id="next-btn" onclick="nextQuestion()">Next Question →</button>
+</div>
+
+<div class="results-screen" id="results-screen">
+  <div class="results-emoji" id="results-emoji">🏆</div>
+  <div class="results-title" id="results-title">Results</div>
+  <div class="results-sub" id="results-sub"></div>
+  <div class="results-grid">
+    <div class="result-stat"><div class="num" id="final-correct" style="color:#4ADE80">0</div><div class="lbl">Correct</div></div>
+    <div class="result-stat"><div class="num" id="final-total" style="color:#C4B5FD">20</div><div class="lbl">Total</div></div>
+    <div class="result-stat"><div class="num" id="final-pct" style="color:#F9C02E">0%</div><div class="lbl">Score</div></div>
+  </div>
+  <button class="restart-btn" onclick="restart()">🔄 Restart Trainer</button>
+</div>
+
+<div class="banner" style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;padding:12px 20px">
+  <img src="data:image/jpeg;base64,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" style="width:38px;height:38px;border-radius:50%;border:2px solid #F9C02E;object-fit:cover;flex-shrink:0">
+  <div style="text-align:left">
+    <div style="font-size:11px;font-weight:800;color:#F9C02E">Instructor Maryam Tariq &nbsp;·&nbsp; PMI Authorized Instructor</div>
+    <div style="font-size:10px;color:#C4B5FD;margin-top:2px">+1 (646) 259-5210 &nbsp;·&nbsp; mariamtariq257@gmail.com &nbsp;·&nbsp; Enroll today — I guarantee you pass. &nbsp;|&nbsp; 📞 Book a 1:1 Session — +1 (646) 259-5210</div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {
+    category:'🔑 Leadership Style',
+    scenario:'A team member has just joined the project and is enthusiastic but has <strong>no prior experience</strong> with the tools or processes. They keep asking for step-by-step guidance on every task.',
+    pick:'Use a Directive leadership style — assign specific tasks with clear instructions, set short deadlines, and check in frequently.',
+    skip:'Give the team member full autonomy and tell them to figure it out on their own — they will learn faster.',
+    pickExp:'A new, inexperienced team member is in the <span class="keyword-highlight">Forming stage</span> of Tuckman. PMI maps Forming to Directive leadership — clear guidance, structured tasks, close supervision. This gives the person what they actually need: clarity.',
+    skipExp:'Autonomy is reserved for high-performing, experienced teams in the Performing stage. Giving autonomy to someone who has no experience and is asking for help is abandonment — not empowerment. PMI never picks this.',
+    principle:'⚙️ PMI Principle: Match leadership style to team development stage. Forming = Directive. Performing = Servant/Laissez-faire.'
+  },
+  {
+    category:'🤝 Conflict Resolution',
+    scenario:'Two senior engineers have been arguing for two weeks about the technical approach. The project is falling behind. Both parties refuse to compromise. The PM needs to resolve this <strong>today</strong>.',
+    pick:'Meet with both engineers together, facilitate an open discussion of each option, and work toward a solution that addresses both parties\' technical concerns.',
+    skip:'Make the decision yourself using your authority as PM and instruct both engineers to follow it going forward.',
+    pickExp:'PMI\'s preferred conflict resolution approach is always <span class="keyword-highlight">Collaborating (Problem-Solving)</span> — High Assertiveness + High Cooperativeness. It produces the best long-term outcome and respects both parties. Even when time is tight, PMI wants you to try collaboration first.',
+    skipExp:'Forcing (using authority to impose a decision) is only appropriate in genuine emergencies where there is literally no time for discussion. Two weeks of conflict does not qualify. Forcing damages relationships and creates resentment — PMI avoids it unless there is absolutely no alternative.',
+    principle:'⚙️ PMI Principle: Collaborating = PMI #1 preference. Forcing = last resort, emergencies only. Avoiding = never appropriate long-term.'
+  },
+  {
+    category:'🧠 Servant Leadership',
+    scenario:'A team member tells the PM that a recurring status meeting is taking two hours every week and producing nothing useful. The team is frustrated and <strong>losing productive time</strong>.',
+    pick:'Cancel the meeting or redesign it. Find out what information the team actually needs and create a leaner communication method that serves the team better.',
+    skip:'Keep the meeting — it was scheduled in the Communications Management Plan and removing it requires a change request.',
+    pickExp:'A Servant Leader\'s job is to <span class="keyword-highlight">remove impediments</span> and protect the team\'s productive time. A useless meeting is a roadblock. PMI expects the PM to act immediately — serve the team, not the bureaucracy.',
+    skipExp:'PMI does not value rigid adherence to process when it actively harms the team. Following a plan that is clearly not working is not discipline — it is poor leadership. The plan serves the project, not the other way around.',
+    principle:'⚙️ PMI Principle: Servant leader removes obstacles, protects team focus, and adapts. Process is a tool — not a constraint to hide behind.'
+  },
+  {
+    category:'💡 Motivation — Herzberg',
+    scenario:'A team member is consistently delivering excellent work but seems <strong>disengaged and unmotivated</strong>. Their salary is above market rate and they have all the tools they need.',
+    pick:'Recognize their contribution publicly, give them a more challenging assignment, and discuss opportunities for professional growth and career development.',
+    skip:'Offer a salary increase or performance bonus to re-engage them.',
+    pickExp:'<span class="keyword-highlight">Herzberg\'s Two-Factor Theory</span> — salary is a Hygiene Factor. It prevents dissatisfaction but does not create motivation. This person already has adequate salary. What they need are Motivators: recognition, achievement, growth, and meaningful work.',
+    skipExp:'More money will not fix this situation. The person already earns above market. Herzberg showed that adding Hygiene Factors (salary, benefits, working conditions) beyond a threshold has zero effect on motivation. PMI will never pick a salary increase as the solution to a motivation problem.',
+    principle:'⚙️ PMI Principle: Herzberg — Hygiene Factors prevent dissatisfaction. Motivators (recognition, growth, achievement) create engagement. Know the difference.'
+  },
+  {
+    category:'🛡️ Psychological Safety',
+    scenario:'In a retrospective, the PM notices that the same three team members always speak while others stay silent — even when directly asked for input. A junior developer has never spoken in a group setting.',
+    pick:'Create a structured format where every team member contributes before the group discussion begins — such as written input first — and follow up privately with quieter members to understand their concerns.',
+    skip:'Tell the quiet team members they need to speak up and participate or their performance review will reflect their lack of engagement.',
+    pickExp:'<span class="keyword-highlight">Psychological Safety</span> means people feel safe enough to speak without fear of judgment or punishment. The PM\'s job is to create the conditions where participation becomes comfortable — structured formats, private check-ins, and an inclusive environment are the tools.',
+    skipExp:'Threatening performance reviews destroys psychological safety entirely. This approach tells people that silence has consequences — which makes them even less likely to share genuine concerns. PMI would never endorse using evaluation as a participation tool.',
+    principle:'⚙️ PMI Principle: Psychological Safety is the foundation of team performance. Leaders create safety — they do not demand participation through fear.'
+  },
+  {
+    category:'🔑 Leadership Style',
+    scenario:'The team has been working together for eight months. They are performing at a high level, consistently delivering quality work, and have built strong internal processes. They rarely need the PM\'s input on day-to-day decisions.',
+    pick:'Step back, trust the team to manage their own work, and focus your energy on removing external blockers and stakeholder management.',
+    skip:'Continue scheduling daily check-ins and review all deliverables before submission to maintain quality standards.',
+    pickExp:'This team is in the <span class="keyword-highlight">Performing stage</span> of Tuckman. PMI maps this stage to Servant/Laissez-faire leadership — maximum autonomy, minimum interference. A high-performing team that does not need you should not have your check-ins imposed on them. That is micromanagement disguised as quality control.',
+    skipExp:'Daily check-ins and review of every deliverable in a Performing-stage team signals distrust and actively reduces motivation. PMI will never pick ongoing oversight for a team that has already proven it delivers. That is the wrong tool for this stage.',
+    principle:'⚙️ PMI Principle: Performing stage = Servant Leadership. Trust earned teams. Remove yourself from their workflow — remove external blockers instead.'
+  },
+  {
+    category:'📊 Emotional Intelligence',
+    scenario:'During a tense project review meeting, the PM receives sharp criticism from a senior stakeholder in front of the whole team. The PM feels their face flush and a strong urge to defend themselves aggressively.',
+    pick:'Take a breath, acknowledge the feedback calmly, ask one clarifying question to understand the concern fully, and commit to following up with specifics.',
+    skip:'Respond immediately and firmly to defend the team\'s work — the PM\'s job is to protect the team from unfair criticism.',
+    pickExp:'<span class="keyword-highlight">Self-Regulation</span> — controlling your own emotional response — is one of the five EI components PMI tests. The correct response is to pause, stay calm, and respond constructively. Asking a clarifying question shows professionalism and disarms defensiveness.',
+    skipExp:'Responding aggressively — even in defense of the team — is low Self-Regulation. It escalates the situation, damages the PM-stakeholder relationship, and models poor behavior for the team. PMI never picks reactive defensiveness as the right response.',
+    principle:'⚙️ PMI Principle: Self-Regulation — pause before reacting. High EI leaders respond to difficult situations with calm, not reactivity.'
+  },
+  {
+    category:'🤝 Conflict Resolution',
+    scenario:'Two team members have a personality clash that has been ongoing for months. They are both professional about deliverables but refuse to collaborate on anything and create tension in team meetings.',
+    pick:'Meet with each person separately first to understand their perspective, then facilitate a direct conversation between them focused on working agreements rather than personal differences.',
+    skip:'Separate the two team members permanently by assigning them to different workstreams so they never have to collaborate.',
+    pickExp:'PMI prioritizes <span class="keyword-highlight">direct, facilitated resolution</span> of personal conflict. Separating team members is avoidance — it does not resolve the conflict, it relocates it. The PM\'s role is to address the issue through structured conversation and establish working agreements.',
+    skipExp:'Separating team members is the easiest option but the least effective. The conflict still exists, the team culture is damaged, and the underlying issue is never resolved. PMI sees permanent avoidance as a failure of leadership.',
+    principle:'⚙️ PMI Principle: Address conflict directly and early. Avoidance is the weakest tool — it preserves the tension without resolving it.'
+  },
+  {
+    category:'💡 Motivation — Maslow',
+    scenario:'A team member\'s performance has dropped significantly over the past three weeks. After a private conversation, the PM learns the team member is dealing with serious financial stress and <strong>anxiety about job security</strong>.',
+    pick:'Address the security concern directly — clarify the person\'s role on the project, confirm their position is stable, and connect them with any employee assistance resources available.',
+    skip:'Give the team member a more exciting assignment to re-engage them and get their performance back on track.',
+    pickExp:'<span class="keyword-highlight">Maslow\'s Hierarchy of Needs</span> — Safety and Security sit at the second level. Until a lower-level need is addressed, no higher-level motivator (like an exciting assignment) will work. The person cannot focus on the work while their financial safety is in question. Address the base need first.',
+    skipExp:'An exciting assignment is a higher-order motivator — belonging, esteem, self-actualization. Maslow\'s model is sequential. You cannot motivate someone at a higher level when a lower-level need is unmet. This option would be correct if the person felt secure but bored.',
+    principle:'⚙️ PMI Principle: Maslow — address unmet lower needs before applying higher-level motivators. Diagnosing the right level is half the answer.'
+  },
+  {
+    category:'🔑 Leadership Style',
+    scenario:'The project team is in the <strong>Storming stage</strong>. Sub-groups have formed, there is conflict about roles, and two senior members are competing for informal leadership. Team morale is low.',
+    pick:'Facilitate structured team discussions, involve everyone in clarifying roles and responsibilities, and coach the competing team members individually on their contribution to team success.',
+    skip:'Issue a firm directive clarifying the hierarchy and warning the team that continued conflict will be escalated to their functional managers.',
+    pickExp:'<span class="keyword-highlight">Storming stage</span> requires Coaching/Participatory leadership — structured involvement, facilitated conversation, role clarification. The PM needs to be present and engaged, not issuing ultimatums. Participation builds ownership and reduces the power dynamics driving the conflict.',
+    skipExp:'A threatening directive during Storming does not resolve the underlying tension — it suppresses it temporarily through fear. The conflict will resurface. Escalation threats damage trust and push the team further from collaboration. Storming requires coaching, not enforcement.',
+    principle:'⚙️ PMI Principle: Storming = Coaching + Participatory. Engage the conflict, do not suppress it. Involvement creates resolution.'
+  },
+  {
+    category:'🧠 McGregor — Theory X vs Y',
+    scenario:'A PM inherits a team from a previous manager. The previous PM required the team to submit daily activity logs, attend three status meetings per week, and get approval before making any technical decision.',
+    pick:'Assess the team\'s actual performance and capabilities, then progressively remove unnecessary controls — starting with the daily logs — and give the team more ownership over technical decisions.',
+    skip:'Keep the existing control structure in place for the first month to understand the team before making any changes.',
+    pickExp:'The previous PM operated under <span class="keyword-highlight">Theory X</span> — the assumption that people need to be controlled and monitored. PMI favors <span class="keyword-highlight">Theory Y</span> — the assumption that people are capable, motivated, and want to do good work. Removing unnecessary controls signals trust and enables performance.',
+    skipExp:'Keeping Theory X controls "to observe first" sounds cautious but actually tells the team immediately that you do not trust them — before you have any evidence that distrust is warranted. PMI expects new PMs to extend trust first and adjust based on evidence.',
+    principle:'⚙️ PMI Principle: Theory Y is PMI\'s default. Extend trust first. Micromanagement creates the dependency it claims to prevent.'
+  },
+  {
+    category:'📊 Emotional Intelligence',
+    scenario:'A PM notices that a usually reliable team member has been <strong>unusually quiet, missing meetings, and submitting work late</strong> for the past two weeks without any explanation.',
+    pick:'Check in with the team member privately and genuinely ask if everything is alright — express that you have noticed the change and want to understand if there is anything you can do to support them.',
+    skip:'Send the team member a formal email documenting the missed meetings and late submissions and requesting an explanation within 24 hours.',
+    pickExp:'<span class="keyword-highlight">Social Awareness</span> — noticing what others are experiencing — combined with <span class="keyword-highlight">Empathy</span> — genuinely engaging with their situation. PMI expects a PM to notice behavioral changes and respond with human connection first, not administrative process. A private, supportive check-in is always the right first step.',
+    skipExp:'A formal documentation email is a punitive, administrative response to what is clearly a human situation. It signals that the PM is more concerned with records than the person. PMI would see this as low Social Awareness and low Empathy — the PM noticed the symptoms but responded to process rather than the person.',
+    principle:'⚙️ PMI Principle: Social Awareness + Empathy = notice the person before you document the behavior. Human first, administrative second.'
+  },
+  {
+    category:'🤝 Conflict — Substantive vs Personal',
+    scenario:'Two team members disagree on which database technology to use for a key system component. They are both making technical arguments and the discussion is becoming heated but remains focused on the technical merits.',
+    pick:'Facilitate a structured technical discussion where both options are evaluated against agreed criteria. Bring in a neutral technical expert if needed to help assess the options.',
+    skip:'Step in immediately and stop the argument — tell both team members that disagreements should be resolved outside of the team meeting.',
+    pickExp:'This is a <span class="keyword-highlight">Substantive conflict</span> — a disagreement about work content, not personal differences. PMI values substantive conflict because it drives better decisions. The PM\'s role is to facilitate a structured evaluation, not suppress the debate. Good technical discussions should be welcomed.',
+    skipExp:'Stopping a substantive technical debate is counterproductive. The team is doing exactly what PMI wants — engaging with the work critically. Telling them to take it outside removes the team from the decision and eliminates the collaborative problem-solving that produces the best technical outcome.',
+    principle:'⚙️ PMI Principle: Substantive conflict (about work) = facilitate. Personal conflict (about the person) = address directly. Know the type before choosing the response.'
+  },
+  {
+    category:'🛡️ Team Empowerment',
+    scenario:'A team member comes to the PM with a proposed solution to a recurring technical problem. The solution is solid but different from the standard approach documented in the project plan.',
+    pick:'Review the proposal with the team member, ask questions to confirm it is technically sound, then support them in presenting it to the wider team for implementation.',
+    skip:'Tell the team member that deviations from the project plan require a formal change request through the Change Control Board and cannot be implemented informally.',
+    pickExp:'PMI values <span class="keyword-highlight">team empowerment and autonomy</span>. A team member bringing a better solution is exactly the behavior the PM should encourage. Not every improvement requires a formal change request — minor technical improvements within scope can and should be owned by the team. Blocking this with bureaucracy kills initiative.',
+    skipExp:'Reflexively directing every proposed improvement to the CCB treats the team like a compliance function rather than a thinking, problem-solving group. PMI sees this as a failure to empower — the PM is using process as a substitute for judgment.',
+    principle:'⚙️ PMI Principle: Empower the team to solve problems. Reserve formal change control for scope, schedule, and budget impacts — not every technical decision.'
+  },
+  {
+    category:'💡 Motivation — McClelland',
+    scenario:'A senior team member always volunteers for the most visible assignments, sets aggressive personal performance targets, and frequently asks for feedback on how they are performing against others on the team.',
+    pick:'Assign them to high-visibility deliverables with clear success metrics, provide regular performance feedback, and recognize their achievements publicly.',
+    skip:'Rotate this team member through quieter, support-oriented tasks to develop a more balanced skill set.',
+    pickExp:'<span class="keyword-highlight">McClelland\'s Theory of Needs — Need for Achievement (nAch)</span>. This person is clearly driven by achievement, recognition, and measurable success. PMI expects the PM to recognize what motivates each individual and align assignments accordingly. High-nAch people perform best with challenging goals and clear feedback.',
+    skipExp:'Rotating a high-achiever to support tasks removes their primary motivator and reduces their contribution to the project. PMI does not believe in one-size-fits-all task distribution when individual motivators are clearly visible. This approach would demotivate the person and lose their best performance.',
+    principle:'⚙️ PMI Principle: McClelland — nAch = achievement and recognition. Match the assignment to the motivational driver. Individual diagnosis before generic assignment.'
+  },
+  {
+    category:'📊 Justice Theory',
+    scenario:'Two team members performed equally well last quarter. One receives a performance bonus and the other does not because their manager forgot to submit the paperwork. The second team member finds out and feels the outcome was unfair.',
+    pick:'Acknowledge the error immediately, work with HR to correct it, and explain transparently to the affected team member what happened and what steps are being taken to fix it.',
+    skip:'Explain that performance decisions are confidential and that the team member should not be comparing their outcomes to others.',
+    pickExp:'This is a <span class="keyword-highlight">Distributive Justice</span> violation — unequal outcomes for equal performance. PMI expects the PM to acknowledge, correct, and communicate transparently. Transparency is the key tool here — the person needs to know the error is being fixed, not dismissed.',
+    skipExp:'Telling someone not to compare outcomes after an obvious error is dismissive and escalates the injustice. It adds a <span class="keyword-highlight">Procedural Justice</span> violation on top of the Distributive one — the process for correcting errors is now also opaque. PMI sees this as a compounding failure of leadership.',
+    principle:'⚙️ PMI Principle: Justice Theory — Distributive (fair outcomes), Procedural (fair process), Interactional (respectful treatment). Violations of any one damage trust and team cohesion.'
+  },
+  {
+    category:'🔑 Situational Leadership',
+    scenario:'A highly experienced team member has been asked to lead a new type of deliverable they have never done before. They have deep technical skills but are visibly <strong>uncertain and hesitant</strong> about this new responsibility.',
+    pick:'Work closely with them — clarify expectations, offer coaching and support, and check in regularly until they build confidence in the new area.',
+    skip:'Tell them you chose them because you trust their judgment and leave them to manage the deliverable independently.',
+    pickExp:'Situational Leadership diagnoses competence AND confidence. This person has <span class="keyword-highlight">high competence</span> in general but <span class="keyword-highlight">low confidence</span> in this specific area. PMI maps this to Coaching — providing support, structure, and encouragement while respecting their expertise. Leaving them alone ignores the confidence gap.',
+    skipExp:'Expressing trust and leaving them alone is appropriate when someone has both competence AND confidence. This person is clearly signaling they need support in this new context. Autonomy without support in an unfamiliar area is not empowerment — it is isolation.',
+    principle:'⚙️ PMI Principle: Situational Leadership reads both competence and confidence per task — not just overall experience. Same person, different task = potentially different leadership approach.'
+  },
+  {
+    category:'🤝 Negotiation',
+    scenario:'The PM needs to negotiate with a functional manager to release a key resource to the project. The functional manager needs the resource for their own department\'s work at the same time.',
+    pick:'Explore the specific timing and workload constraints for both sides, then look for a shared arrangement — part-time allocation, specific delivery windows, or task sequencing — that meets both department\'s needs.',
+    skip:'Escalate to the project sponsor and ask them to instruct the functional manager to release the resource.',
+    pickExp:'<span class="keyword-highlight">Integrative Negotiation (Win-Win)</span> is PMI\'s preferred negotiation approach. It looks for solutions that genuinely meet both parties\' underlying needs. Exploring timing flexibility, partial allocation, or shared scheduling creates a sustainable agreement without damaging the relationship.',
+    skipExp:'Escalating to the sponsor is a last resort — it bypasses the functional manager and uses power rather than problem-solving. PMI expects the PM to exhaust collaborative negotiation before escalating. Using authority when negotiation is still possible damages the working relationship and signals poor interpersonal skills.',
+    principle:'⚙️ PMI Principle: Integrative negotiation first — explore the other party\'s real constraints. Escalation is the last tool, not the first response.'
+  },
+  {
+    category:'🧠 Servant Leadership',
+    scenario:'During a sprint, the team realizes they cannot complete all committed user stories because of an unexpected technical dependency. The Product Owner is unavailable. The team is waiting for someone to make a decision.',
+    pick:'Facilitate the team\'s own decision-making — help them analyze the options, reprioritize the remaining stories based on value, and own the decision as a team.',
+    skip:'Make the prioritization decision yourself to keep the team moving and inform the Product Owner afterward.',
+    pickExp:'<span class="keyword-highlight">Servant Leadership in Agile</span> — the Scrum Master/PM enables the team to self-organize and make their own decisions. The PM\'s role is facilitation, not substitution. Helping the team work through the analysis and make the call themselves is exactly PMI\'s expectation.',
+    skipExp:'Making the decision yourself removes team ownership and sets a precedent that the PM decides when things get uncertain. In Agile, the team owns the sprint commitment. The PM making unilateral prioritization decisions during a sprint is overreach — even with good intentions.',
+    principle:'⚙️ PMI Principle: Servant leaders facilitate team decisions — they do not make decisions for the team. Self-organization is a capability to build, not bypass.'
+  },
+  {
+    category:'💡 Active Listening',
+    scenario:'A team member is explaining a concern about the project scope to the PM. Midway through their explanation, the PM realizes they already know what the issue is and how to solve it.',
+    pick:'Continue listening without interrupting, let the team member finish completely, then paraphrase what you heard before sharing your solution.',
+    skip:'Interrupt politely to confirm you understand the issue and share the solution — this saves time for both of you.',
+    pickExp:'<span class="keyword-highlight">Active Listening</span> means allowing the speaker to finish completely before responding. Paraphrasing back confirms understanding and makes the team member feel genuinely heard. PMI values the quality of the interaction, not just the efficiency of the outcome. The team member may have additional context you have not heard yet.',
+    skipExp:'Interrupting — even politely — signals that you are more interested in your solution than in the person\'s full experience of the problem. PMI sees interrupting as low Social Awareness. You may also miss important context that changes your solution entirely.',
+    principle:'⚙️ PMI Principle: Active Listening — full attention, no interruption, paraphrase to confirm. Listening completely is as important as the response.'
+  }
+];
+
+// ── STATE ──────────────────────────────────────────────────────────
+let current = 0, correct = 0, wrong = 0, answered = false;
+let order = [];
+
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-.5); }
+
+function init(){
+  order = shuffle(QUESTIONS);
+  current=0; correct=0; wrong=0; answered=false;
+  document.getElementById('quiz-area').style.display='block';
+  document.getElementById('results-screen').classList.remove('show');
+  updateScore();
+  loadQuestion();
+}
+
+function loadQuestion(){
+  answered=false;
+  const q = order[current];
+  const total = order.length;
+
+  // Reset UI
+  ['btn-a','btn-b'].forEach(id=>{
+    const b=document.getElementById(id);
+    b.className='choice-btn';
+    b.style.pointerEvents='auto';
+  });
+  document.getElementById('icon-a').textContent='✅';
+  document.getElementById('icon-b').textContent='❌';
+  document.getElementById('icon-a').style.opacity='0';
+  document.getElementById('icon-b').style.opacity='0';
+  document.getElementById('explanation-box').classList.remove('show');
+  document.getElementById('next-btn').classList.remove('show');
+
+  // Randomize which side pick/skip appears on
+  const pickLeft = Math.random() > .5;
+  const pickBtn  = pickLeft ? 'btn-a' : 'btn-b';
+  const skipBtn  = pickLeft ? 'btn-b' : 'btn-a';
+
+  document.getElementById(pickLeft?'choice-a-text':'choice-b-text').innerHTML = q.pick;
+  document.getElementById(pickLeft?'choice-b-text':'choice-a-text').innerHTML = q.skip;
+
+  // Reset letter circles — just A and B, no labels
+  const lA = document.getElementById('letter-a');
+  const lB = document.getElementById('letter-b');
+  lA.className='choice-letter'; lA.textContent='A';
+  lB.className='choice-letter'; lB.textContent='B';
+
+  document.getElementById('icon-a').textContent='✅';
+  document.getElementById('icon-b').textContent='❌';
+
+  // Store pick/skip btn ids
+  document.getElementById('btn-a').dataset.role = pickLeft ? 'pick' : 'skip';
+  document.getElementById('btn-b').dataset.role = pickLeft ? 'skip' : 'pick';
+
+  document.getElementById('category-badge').innerHTML = q.category;
+  document.getElementById('scenario-text').innerHTML = q.scenario;
+  document.getElementById('exp-pick-text').innerHTML = q.pickExp;
+  document.getElementById('exp-skip-text').innerHTML = q.skipExp;
+  document.getElementById('pmi-principle').textContent = q.principle;
+
+  // Progress
+  const pct = (current/total)*100;
+  document.getElementById('progress-fill').style.width = pct+'%';
+  document.getElementById('q-counter').textContent = `Question ${current+1} of ${total}`;
+}
+
+function choose(side){
+  if(answered) return;
+  answered=true;
+  const role = document.getElementById('btn-'+side).dataset.role;
+  const isCorrect = role==='pick';
+
+  if(isCorrect){ correct++; } else { wrong++; }
+  updateScore();
+
+  // Style buttons after answer
+  const pickBtn = document.getElementById('btn-a').dataset.role==='pick' ? 'btn-a' : 'btn-b';
+  const skipBtn = pickBtn==='btn-a' ? 'btn-b' : 'btn-a';
+  document.getElementById(pickBtn).classList.add('pick');
+  document.getElementById(skipBtn).classList.add('skip');
+  document.getElementById(pickBtn).querySelector('.choice-icon').style.opacity='1';
+  document.getElementById(skipBtn).querySelector('.choice-icon').style.opacity='1';
+  document.getElementById('btn-a').classList.add('disabled');
+  document.getElementById('btn-b').classList.add('disabled');
+  // Swap letter circles to PMI/SKIP revealed tags
+  const pLetter=document.getElementById(pickBtn==='btn-a'?'letter-a':'letter-b');
+  const sLetter=document.getElementById(pickBtn==='btn-a'?'letter-b':'letter-a');
+  pLetter.className='revealed-tag revealed-pick'; pLetter.textContent='✅ PMI PICK';
+  sLetter.className='revealed-tag revealed-skip'; sLetter.textContent='❌ SKIP';
+
+  // Result
+  const badge = document.getElementById('result-badge');
+  const title = document.getElementById('result-title');
+  if(isCorrect){
+    badge.className='result-badge correct';
+    badge.textContent='✅ PMI Pick — Correct!';
+    title.textContent='You think like a PMI project manager.';
+  } else {
+    badge.className='result-badge wrong';
+    badge.textContent='❌ That was the Skip';
+    title.textContent='Let\'s understand why PMI thinks differently.';
+  }
+
+  document.getElementById('explanation-box').classList.add('show');
+  document.getElementById('next-btn').classList.add('show');
+  document.getElementById('next-btn').textContent = current===order.length-1 ? 'See Results 🏆' : 'Next Question →';
+}
+
+function nextQuestion(){
+  current++;
+  if(current >= order.length){ showResults(); return; }
+  loadQuestion();
+}
+
+function updateScore(){
+  document.getElementById('score-correct').textContent=correct;
+  document.getElementById('score-wrong').textContent=wrong;
+}
+
+function showResults(){
+  document.getElementById('quiz-area').style.display='none';
+  const screen = document.getElementById('results-screen');
+  screen.classList.add('show');
+  const pct = Math.round((correct/order.length)*100);
+  document.getElementById('final-correct').textContent=correct;
+  document.getElementById('final-total').textContent=order.length;
+  document.getElementById('final-pct').textContent=pct+'%';
+  let emoji,title,sub;
+  if(pct>=85){
+    emoji='🏆'; title='People Domain Master!';
+    sub=`${pct}% — You think exactly like PMI. Your exam instinct is sharp. Keep this up and the People Domain will not touch you.`;
+  } else if(pct>=65){
+    emoji='💪'; title='Strong Foundation!';
+    sub=`${pct}% — You understand the PMI mindset well. A few concepts need reinforcement. Run the trainer again and focus on the questions you got wrong.`;
+  } else if(pct>=45){
+    emoji='📚'; title='Building the Instinct';
+    sub=`${pct}% — You are getting there. The PMI mindset takes practice to internalize. Run through the trainer again — the explanations will start clicking.`;
+  } else {
+    emoji='🎯'; title='Keep Practicing';
+    sub=`${pct}% — The People Domain is about rewiring how you think. Read each explanation carefully, then run the trainer again. You will improve significantly with one more pass.`;
+  }
+  document.getElementById('results-emoji').textContent=emoji;
+  document.getElementById('results-title').textContent=title;
+  document.getElementById('results-sub').textContent=sub;
+}
+
+function restart(){ init(); window.scrollTo(0,0); }
+
+init();
+</script>
+</body>
+</html>
